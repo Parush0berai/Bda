@@ -1,0 +1,16 @@
+code for making df:
+
+
+val employee = sc.textFile("/workdir/employee.txt")
+case class Employee(ID:Int,Name:String,Age:Int,Salary:Int)
+val employeerdd=employee.map(_.split("\\s+")).map(x=>Employee(x(0).toInt,x(1),x(2).toInt,x(3).toInt))
+val ds=employeerdd.toDS()
+val df=employeerdd.toDF()
+grouping:
+val grooup=ds.groupBy("name")
+groop.count().show
+mapping:
+val ans=employeerdd.map(x=>(x.name,x.age*2,x.salary))
+
+filtering:
+val ans2=employeerdd.filter(x=>x.salary<20000)
