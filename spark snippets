@@ -14,3 +14,24 @@ val ans=employeerdd.map(x=>(x.name,x.age*2,x.salary))
 
 filtering:
 val ans2=employeerdd.filter(x=>x.salary<20000)
+
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import regexp_replace
+
+# Initialize SparkSession
+spark = SparkSession.builder \
+    .appName("Replace Card Type") \
+    .getOrCreate()
+
+# Read the CSV file into a DataFrame
+df = spark.read.csv("/aakash/q8input.txt", header=True)
+
+# Replace text in Card_type column using regexp_replace
+df = df.withColumn("Card_type", regexp_replace(df["Card_type"], "Checking", "Cash"))
+
+# Show the updated DataFrame
+df.show()
+
+# Stop the SparkSession
+spark.stop()
