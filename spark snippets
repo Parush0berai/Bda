@@ -38,3 +38,27 @@ spark.stop()
 
 spark-submit pyspark.py
 
+
+//multiple delimiters:
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("Multi-Delimiter DataFrame") \
+    .getOrCreate()
+file_path = "path/to/your/data.txt"
+df = spark.read.text(file_path).toDF("line")
+from pyspark.sql.functions import split, col
+
+# Regular expression to match any of the delimiters
+regex_pattern = "[ ,;|]+"
+
+# Apply the split function and expand the result into separate columns
+# Let's assume you expect 3 columns after the split
+split_col = split(col("line"), regex_pattern)
+df = df.withColumn("Column1", split_col.getItem(0)) \
+       .withColumn("Column2", split_col.getItem(1)) \
+       .withColumn("Column3", split_col.getItem(2))
+
+# Optionally, drop the original 'line' column
+df = df.drop("line")
