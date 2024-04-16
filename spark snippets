@@ -35,3 +35,6 @@ df.show()
 
 # Stop the SparkSession
 spark.stop()
+
+spark-submit pyspark.py
+
